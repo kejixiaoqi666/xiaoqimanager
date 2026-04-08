@@ -9,8 +9,8 @@ verify_project_layout() {
   if [[ ! -f "$ROOT_DIR/app.py" ]]; then
     log "error: app.py not found under project root: $ROOT_DIR"
     log "hint: please run inside the repository, for example:"
-    log "      git clone https://github.com/doubleDimple/oci-start.git"
-    log "      cd oci-start"
+    log "      git clone https://github.com/doubleDimple/xiaoqimanager.git"
+    log "      cd xiaoqimanager"
     log "      bash scripts/install.sh"
     exit 1
   fi

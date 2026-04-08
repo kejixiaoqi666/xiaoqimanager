@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-https://github.com/doubleDimple/oci-start.git}"
+REPO_URL="${REPO_URL:-https://github.com/doubleDimple/xiaoqimanager.git}"
 APP_DIR="${APP_DIR:-$HOME/xiaoqimanager}"
 BRANCH="${BRANCH:-main}"
 RUN_MODE="${RUN_MODE:-daemon}" # daemon | foreground
