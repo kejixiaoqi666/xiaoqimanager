@@ -63,6 +63,29 @@ python3 app.py
 
 > 注意：`scripts/install.sh` 与 `app.py` 都是**相对仓库根目录**的路径，必须先 `cd` 到项目目录。
 
+如果你希望“真正一键启动”（自动安装 + 后台运行 + PID/日志管理），直接用：
+
+```bash
+bash scripts/start.sh
+```
+
+常用命令：
+
+```bash
+# 前台运行（便于调试）
+bash scripts/start.sh --foreground
+
+# 查看状态 / 停止 / 重启
+bash scripts/start.sh --status
+bash scripts/start.sh --stop
+bash scripts/start.sh --restart
+```
+
+日志和 PID 文件位置：
+
+- `run/xiaoqimanager.log`
+- `run/xiaoqimanager.pid`
+
 ---
 
 ## 3. install.sh 会做什么
