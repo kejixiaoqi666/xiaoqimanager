@@ -5,6 +5,38 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 log() { echo "[xiaoqimanager] $*"; }
 
+run_privileged() {
+  if [[ "${EUID:-$(id -u)}" -eq 0 ]]; then
+    "$@"
+    return
+  fi
+
+  if command -v sudo >/dev/null 2>&1; then
+    sudo "$@"
+    return
+  fi
+
+  log "permission denied for command: $*"
+  log "hint: run as root, or install sudo and rerun"
+  exit 1
+}
+
+verify_project_layout() {
+  if [[ ! -f "$ROOT_DIR/app.py" ]]; then
+    log "error: app.py not found under project root: $ROOT_DIR"
+    log "hint: please run inside the repository, for example:"
+    log "      git clone https://github.com/doubleDimple/oci-start.git"
+    log "      cd oci-start"
+    log "      bash scripts/install.sh"
+    exit 1
+  fi
+
+  if [[ ! -f "$ROOT_DIR/config/services.json" ]]; then
+    log "error: missing config/services.json under: $ROOT_DIR/config"
+    exit 1
+  fi
+}
+
 ensure_cmd() {
   local cmd="$1"
   local apt_pkg="$2"
@@ -17,8 +49,8 @@ ensure_cmd() {
   if command -v apt-get >/dev/null 2>&1; then
     log "installing missing dependency: $cmd ($apt_pkg)"
     export DEBIAN_FRONTEND=noninteractive
-    apt-get update -y
-    apt-get install -y "$apt_pkg"
+    run_privileged apt-get update -y
+    run_privileged apt-get install -y "$apt_pkg"
   else
     log "dependency '$cmd' is missing. Please install package '$apt_pkg' manually."
     exit 1
@@ -49,16 +81,13 @@ ENV_EOF
 
 mkdir -p "$ROOT_DIR/backend/core-a" "$ROOT_DIR/backend/core-b" "$ROOT_DIR/config" "$ROOT_DIR/web"
 
+verify_project_layout
+
 ensure_cmd python3 python3
 ensure_cmd curl curl
 
 ensure_file "$ROOT_DIR/backend/core-a/.env.example" "$ROOT_DIR/backend/core-a/.env"
 ensure_file "$ROOT_DIR/backend/core-b/.env.example" "$ROOT_DIR/backend/core-b/.env"
-
-if [[ ! -f "$ROOT_DIR/config/services.json" ]]; then
-  log "error: missing config/services.json"
-  exit 1
-fi
 
 log "installation complete."
 log "next: cd $ROOT_DIR && python3 app.py"

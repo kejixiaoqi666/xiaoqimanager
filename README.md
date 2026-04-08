@@ -2,6 +2,26 @@
 
 小七管理（初始化正式项目）是一个**轻量级多服务管理面板**：
 
+## 一键（curl）启动
+
+在 VPS 上直接执行（和你给的 `curl -sL ...` 方式一致）：
+
+```bash
+curl -sL https://raw.githubusercontent.com/doubleDimple/oci-start/refs/heads/main/bootstrap.sh -o bootstrap.sh && chmod +x bootstrap.sh && ./bootstrap.sh
+```
+
+不想 `chmod` 也可以：
+
+```bash
+curl -sL https://raw.githubusercontent.com/doubleDimple/oci-start/refs/heads/main/bootstrap.sh | bash
+```
+
+可选变量（自定义仓库、目录、分支）：
+
+```bash
+REPO_URL=https://github.com/doubleDimple/oci-start.git APP_DIR=$HOME/oci-start BRANCH=main bash bootstrap.sh
+```
+
 - 后端使用 Python 标准库 HTTP 服务，不依赖 Flask/FastAPI。
 - 前端是静态页面，默认展示服务状态、配置预览和总览统计。
 - 配置统一由 `config/services.json` 管理，适合快速接入多个内部服务。
@@ -63,6 +83,41 @@ python3 app.py
 
 > 注意：`scripts/install.sh` 与 `app.py` 都是**相对仓库根目录**的路径，必须先 `cd` 到项目目录。
 
+如果你希望“真正一键启动”（自动安装 + 后台运行 + PID/日志管理），直接用：
+
+```bash
+bash scripts/start.sh
+```
+
+如果你在 VPS 上不想手动做授权（比如 `chmod +x`、依赖安装时提权），用“内部授权启动脚本”：
+
+```bash
+bash scripts/vps_start.sh
+```
+
+它会自动：
+
+1. 检查并补齐 `scripts/install.sh` / `scripts/start.sh` 的执行权限
+2. 在需要时自动走 `sudo` 提权安装依赖
+3. 启动服务（默认后台）
+
+常用命令：
+
+```bash
+# 前台运行（便于调试）
+bash scripts/start.sh --foreground
+
+# 查看状态 / 停止 / 重启
+bash scripts/start.sh --status
+bash scripts/start.sh --stop
+bash scripts/start.sh --restart
+```
+
+日志和 PID 文件位置：
+
+- `run/xiaoqimanager.log`
+- `run/xiaoqimanager.pid`
+
 ---
 
 ## 3. install.sh 会做什么
@@ -103,6 +158,35 @@ A: 你当前目录不在仓库根目录，先执行 `cd oci-start`（或你的�
 
 ### Q2: `python3: can't open file 'app.py': [Errno 2] No such file or directory`
 A: 同上，`app.py` 不在当前目录；请进入仓库根目录后再执行。
+
+### Q2.1: 我已经 `cd oci-start` 了，为什么还是提示没有 `scripts/install.sh` / `app.py`？
+A: 这通常不是目录问题，而是你当前仓库内容不对（比如克隆到了同名但不同内容的仓库、切到了错误分支，或拉取不完整）。
+
+请直接执行下面这组“强校验”命令：
+
+```bash
+pwd
+git remote -v
+git branch --show-current
+find . -maxdepth 2 -type f \( -name "install.sh" -o -name "app.py" -o -name "services.json" \)
+```
+
+在正确仓库中，你至少应看到：
+
+- `./scripts/install.sh`
+- `./app.py`
+- `./config/services.json`
+
+如果看不到，请删除后重新克隆（避免旧目录污染）：
+
+```bash
+cd ~
+rm -rf oci-start
+git clone https://github.com/doubleDimple/oci-start.git
+cd oci-start
+bash scripts/install.sh
+WEB_HOST=0.0.0.0 WEB_PORT=8080 python3 app.py
+```
 
 ### Q3: 脚本能否在 CentOS / Rocky 使用？
 A: 当前自动安装依赖仅内置 `apt-get` 路径。若系统无 `apt-get`，脚本会提示你手动安装 `python3` 和 `curl`。
