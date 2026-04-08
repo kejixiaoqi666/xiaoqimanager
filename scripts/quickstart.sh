@@ -8,6 +8,15 @@ RUN_MODE="${RUN_MODE:-daemon}" # daemon | foreground
 
 log() { echo "[xiaoqimanager:quickstart] $*"; }
 
+# Force all git operations to run in non-interactive mode so quickstart never
+# blocks waiting for username/password input.
+git_no_prompt() {
+  GIT_TERMINAL_PROMPT=0 \
+    GIT_ASKPASS=/bin/echo \
+    GCM_INTERACTIVE=Never \
+    git -c credential.helper= "$@"
+}
+
 require_cmd() {
   local cmd="$1"
   if command -v "$cmd" >/dev/null 2>&1; then
@@ -28,13 +37,13 @@ require_cmd() {
 clone_or_update_repo() {
   if [[ -d "$APP_DIR/.git" ]]; then
     log "detected existing repo, updating: $APP_DIR"
-    git -C "$APP_DIR" fetch --all --prune
-    if git -C "$APP_DIR" show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
-      git -C "$APP_DIR" checkout "$BRANCH"
-      git -C "$APP_DIR" reset --hard "origin/$BRANCH"
+    git_no_prompt -C "$APP_DIR" fetch --all --prune
+    if git_no_prompt -C "$APP_DIR" show-ref --verify --quiet "refs/remotes/origin/$BRANCH"; then
+      git_no_prompt -C "$APP_DIR" checkout "$BRANCH"
+      git_no_prompt -C "$APP_DIR" reset --hard "origin/$BRANCH"
     else
       log "warning: branch '$BRANCH' not found on origin, keeping current branch"
-      git -C "$APP_DIR" pull --ff-only || true
+      git_no_prompt -C "$APP_DIR" pull --ff-only || true
     fi
     return 0
   fi
@@ -46,8 +55,11 @@ clone_or_update_repo() {
   fi
 
   log "cloning repository into: $APP_DIR"
-  # Disable interactive username/password prompts so quickstart never blocks on login.
-  GIT_TERMINAL_PROMPT=0 git clone --depth=1 --branch "$BRANCH" "$REPO_URL" "$APP_DIR"
+  if ! git_no_prompt clone --depth=1 --branch "$BRANCH" "$REPO_URL" "$APP_DIR"; then
+    log "clone failed (non-interactive mode)."
+    log "if the repo is private, please use a tokenized REPO_URL or SSH key-based URL."
+    exit 1
+  fi
 }
 
 start_service() {
