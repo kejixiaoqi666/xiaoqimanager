@@ -88,6 +88,30 @@ bash scripts/start.sh --restart
 
 ---
 
+
+## 一键安装/更新并启动（单行命令）
+
+如果你希望像 `curl ... && bash ...` 这样的方式进行“安装 + 更新 + 启动”，可直接执行：
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/doubleDimple/oci-start/main/scripts/quickstart.sh -o /tmp/xiaoqimanager-quickstart.sh && bash /tmp/xiaoqimanager-quickstart.sh
+```
+
+可选环境变量：
+
+- `APP_DIR`：默认 `$HOME/xiaoqimanager`
+- `REPO_URL`：默认 `https://github.com/doubleDimple/oci-start.git`
+- `BRANCH`：默认 `main`
+- `RUN_MODE`：`daemon`（默认）或 `foreground`
+
+示例（前台运行）：
+
+```bash
+RUN_MODE=foreground curl -fsSL https://raw.githubusercontent.com/doubleDimple/oci-start/main/scripts/quickstart.sh -o /tmp/xiaoqimanager-quickstart.sh && bash /tmp/xiaoqimanager-quickstart.sh
+```
+
+---
+
 ## 3. install.sh 会做什么
 
 `scripts/install.sh` 现在包含以下动作：
