@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO_URL="${REPO_URL:-https://github.com/doubleDimple/xiaoqimanager.git}"
+REPO_URL="${REPO_URL:-https://github.com/kejixiaoqi666/xiaoqimanager.git}"
 APP_DIR="${APP_DIR:-$HOME/xiaoqimanager}"
 BRANCH="${BRANCH:-main}"
 RUN_MODE="${RUN_MODE:-daemon}" # daemon | foreground
@@ -46,7 +46,8 @@ clone_or_update_repo() {
   fi
 
   log "cloning repository into: $APP_DIR"
-  git clone --depth=1 --branch "$BRANCH" "$REPO_URL" "$APP_DIR"
+  # Disable interactive username/password prompts so quickstart never blocks on login.
+  GIT_TERMINAL_PROMPT=0 git clone --depth=1 --branch "$BRANCH" "$REPO_URL" "$APP_DIR"
 }
 
 start_service() {
