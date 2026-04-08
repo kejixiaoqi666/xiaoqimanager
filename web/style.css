@@ -1,0 +1,60 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #0d1117;
+  color: #e6edf3;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem 3rem;
+}
+
+.summary {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1rem;
+}
+
+.card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+code,
+pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.status {
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.status.online {
+  background: #238636;
+}
+
+.status.offline {
+  background: #da3633;
+}
+
+.status.degraded {
+  background: #9e6a03;
+}
