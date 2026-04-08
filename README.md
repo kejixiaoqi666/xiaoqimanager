@@ -104,6 +104,35 @@ A: 你当前目录不在仓库根目录，先执行 `cd oci-start`（或你的�
 ### Q2: `python3: can't open file 'app.py': [Errno 2] No such file or directory`
 A: 同上，`app.py` 不在当前目录；请进入仓库根目录后再执行。
 
+### Q2.1: 我已经 `cd oci-start` 了，为什么还是提示没有 `scripts/install.sh` / `app.py`？
+A: 这通常不是目录问题，而是你当前仓库内容不对（比如克隆到了同名但不同内容的仓库、切到了错误分支，或拉取不完整）。
+
+请直接执行下面这组“强校验”命令：
+
+```bash
+pwd
+git remote -v
+git branch --show-current
+find . -maxdepth 2 -type f \( -name "install.sh" -o -name "app.py" -o -name "services.json" \)
+```
+
+在正确仓库中，你至少应看到：
+
+- `./scripts/install.sh`
+- `./app.py`
+- `./config/services.json`
+
+如果看不到，请删除后重新克隆（避免旧目录污染）：
+
+```bash
+cd ~
+rm -rf oci-start
+git clone https://github.com/doubleDimple/oci-start.git
+cd oci-start
+bash scripts/install.sh
+WEB_HOST=0.0.0.0 WEB_PORT=8080 python3 app.py
+```
+
 ### Q3: 脚本能否在 CentOS / Rocky 使用？
 A: 当前自动安装依赖仅内置 `apt-get` 路径。若系统无 `apt-get`，脚本会提示你手动安装 `python3` 和 `curl`。
 
