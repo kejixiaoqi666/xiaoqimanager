@@ -4,7 +4,9 @@
 
 ## 一键（curl）启动
 
-在 VPS 上直接执行（和你给的 `curl -sL ...` 方式一致）：
+下面是**本项目专用**启动脚本（与 DDNS 脚本无关）：
+
+在 VPS 上直接执行：
 
 ```bash
 curl -sL https://raw.githubusercontent.com/doubleDimple/oci-start/refs/heads/main/bootstrap.sh -o bootstrap.sh && chmod +x bootstrap.sh && ./bootstrap.sh
