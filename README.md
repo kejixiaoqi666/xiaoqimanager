@@ -193,6 +193,37 @@ WEB_HOST=0.0.0.0 WEB_PORT=8080 python3 app.py
 ### Q3: 脚本能否在 CentOS / Rocky 使用？
 A: 当前自动安装依赖仅内置 `apt-get` 路径。若系统无 `apt-get`，脚本会提示你手动安装 `python3` 和 `curl`。
 
+### Q4: GitHub 提示 `This branch has conflicts that must be resolved`，导致不能提交/合并？
+A: 这是分支冲突，不是脚本执行失败。按下面命令在本地解决后再推送即可：
+
+```bash
+# 1) 进入你的分支
+git checkout <your-branch>
+
+# 2) 拉取主分支最新
+git fetch origin
+
+# 3) 把主分支变更合入当前分支（任选一种）
+git merge origin/main
+# 或
+git rebase origin/main
+
+# 4) 按提示编辑冲突文件（你截图里是 README.md / scripts/install.sh）
+git add README.md scripts/install.sh
+
+# 5) 完成 merge 或 rebase
+git commit -m "resolve merge conflicts"
+# 如果是 rebase
+git rebase --continue
+
+# 6) 推送
+git push
+# 如果用过 rebase 需要强推
+git push --force-with-lease
+```
+
+如果你只是想快速通过，推荐优先用 `merge`，风险更低。
+
 ---
 
 ## 6. 适用场景
