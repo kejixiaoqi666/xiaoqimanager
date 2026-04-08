@@ -5,7 +5,7 @@
 ## 快速开始
 
 ```bash
-git clone https://github.com/doubleDimple/xiaoqimanager.git
+git clone https://github.com/kejixiaoqi666/xiaoqimanager.git
 cd xiaoqimanager
 bash scripts/start.sh
 ```
@@ -14,20 +14,18 @@ bash scripts/start.sh
 
 ---
 
-## 你遇到的 404 怎么解决
+## 一键脚本地址（已更新）
 
-你执行的地址是：
+请使用当前项目脚本地址：
 
-- `https://raw.githubusercontent.com/doubleDimple/oci-start/main/scripts/quickstart.sh`
-
-该路径返回 404，通常表示“仓库名或文件路径已变更”。请改用当前项目地址：
+- `https://raw.githubusercontent.com/kejixiaoqi666/xiaoqimanager/refs/heads/main/scripts/quickstart.sh`
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/doubleDimple/xiaoqimanager/main/scripts/quickstart.sh -o /tmp/xiaoqimanager-quickstart.sh \
+curl -fsSL https://raw.githubusercontent.com/kejixiaoqi666/xiaoqimanager/refs/heads/main/scripts/quickstart.sh -o /tmp/xiaoqimanager-quickstart.sh \
   && bash /tmp/xiaoqimanager-quickstart.sh
 ```
 
-> 如果你使用的是自己的 fork，请把 URL 中的 `doubleDimple/xiaoqimanager` 替换成你的仓库路径。
+> 如果你使用的是自己的 fork，请把 URL 中的 `kejixiaoqi666/xiaoqimanager` 替换成你的仓库路径。
 
 ---
 
@@ -36,7 +34,7 @@ curl -fsSL https://raw.githubusercontent.com/doubleDimple/xiaoqimanager/main/scr
 `quickstart.sh` 支持自动 clone / pull 并启动：
 
 - `APP_DIR`：默认 `$HOME/xiaoqimanager`
-- `REPO_URL`：默认 `https://github.com/doubleDimple/xiaoqimanager.git`
+- `REPO_URL`：默认 `https://github.com/kejixiaoqi666/xiaoqimanager.git`
 - `BRANCH`：默认 `main`
 - `RUN_MODE`：`daemon`（默认）或 `foreground`
 
