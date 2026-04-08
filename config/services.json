@@ -1,0 +1,20 @@
+{
+  "services": [
+    {
+      "id": "core-a",
+      "name": "后端 A",
+      "path": "backend/core-a",
+      "config": "backend/core-a/.env",
+      "port": 8101,
+      "healthEndpoint": "http://127.0.0.1:8101/health"
+    },
+    {
+      "id": "core-b",
+      "name": "后端 B",
+      "path": "backend/core-b",
+      "config": "backend/core-b/.env",
+      "port": 8102,
+      "healthEndpoint": "http://127.0.0.1:8102/health"
+    }
+  ]
+}

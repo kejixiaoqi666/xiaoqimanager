@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>小七管理面板</title>
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header>
+        <h1>小七管理面板</h1>
+        <p>统一查看两个后端目录、配置文件与健康状态。</p>
+      </header>
+
+      <section class="summary" id="summary"></section>
+      <section id="service-list" class="grid"></section>
+    </main>
+
+    <template id="service-card-template">
+      <article class="card">
+        <h2 data-field="name"></h2>
+        <p><strong>目录：</strong><code data-field="path"></code></p>
+        <p><strong>配置：</strong><code data-field="config"></code></p>
+        <p><strong>端口：</strong><span data-field="port"></span></p>
+        <p><strong>健康检查：</strong><code data-field="healthEndpoint"></code></p>
+        <p><strong>状态：</strong><span class="status" data-field="status"></span></p>
+        <details>
+          <summary>配置预览</summary>
+          <pre data-field="envPreview"></pre>
+        </details>
+      </article>
+    </template>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
